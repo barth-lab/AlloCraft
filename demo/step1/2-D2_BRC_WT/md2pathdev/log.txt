@@ -1,0 +1,10 @@
+03-Jun-2024 15:53:30: Creating md2path directory in C:\Users\mahdi\Documents\AlloCraft\MD_simulation_analysis\demo\2-D2_BRC_WT
+03-Jun-2024 15:53:57: RMSD plotted and saved successfully
+03-Jun-2024 15:53:58: Receptor RMSF plotted and saved successfully
+03-Jun-2024 15:53:59: Do not forget ligand RMSF! It has also been plotted and saved
+
+03-Jun-2024 15:54:00: Effector RMSF plotted and saved successfully
+03-Jun-2024 15:54:28: PCA analysis commenced (lol at the double analysis)
+03-Jun-2024 15:54:28: Creating pca directory in C:\Users\mahdi\Documents\AlloCraft\MD_simulation_analysis\demo\2-D2_BRC_WT\md2pathdev
+03-Jun-2024 15:54:48: Ligand PCA done
+03-Jun-2024 15:57:50: S2 convergence calculated and plotted

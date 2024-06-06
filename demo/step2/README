@@ -1,0 +1,35 @@
+# Step2 Demo README:
+# This is the second step of the process, where we will do in silico mutagenesis to the hubs that we extracted from step1, followed by coarse grained dynamical coupling calculations.
+
+# Running the ISM part:
+# Assumes you are working with a directory where RosettaMembrane is installed and is being run on a cluster with slurm
+# Set up the directories in the following python scripts:
+start_ism6.py
+sub_queued.py
+summarize_energy_data.py
+
+# Relax input structures: (we just mutate the first residue to itself)
+python3 start_ism6.py --nstruct 300 --radius 100 --hours 6 d2_dpa.pdb P1P 
+python3 start_ism6.py --nstruct 300 --radius 100 --hours 6 d2_inactive.pdb Y1Y
+
+python3 sub_queued.py
+python3 summarize_energy_data.py `pwd` --ignore --threshold 120
+
+# Do the mutagenesis:
+You can the run mutations in the following manner: radius controls the radius around the mutation site that will be repacked. Inactive state structure has a few residues missing compared to the active, and thus the mutation site will be numbered differently.
+
+for mut in I125X; do python3 start_ism6.py --nstruct 300 --radius 5 --hours 6 d2_dpa.pdb $mut; done
+for mut in I120X; do python3 start_ism6.py --nstruct 300 --radius 5 --hours 6 d2_inactive.pdb $mut; done
+python3 sub_queued.py
+python3 summarize_energy_data.py `pwd` --ignore --threshold 120
+
+Extract the lowest energy pdbs from each mutagenesis and use as input for stability and dynamical coupling calculations
+
+# Calculating ddssDCCM and extracting denergies
+# Get file list:
+for i in *inactive*pdb; do echo $i>> file_list_ina.txt; done
+for i in *dpa*pdb; do echo $i>> file_list_act.txt; done
+
+Rscript calc_ddssDCCM.r
+Rscript extract_dE.r file_list_act.txt
+Rscript extract_dE.r file_list_ina.txt
