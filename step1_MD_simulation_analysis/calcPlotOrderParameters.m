@@ -12,8 +12,8 @@ function [params, ndxXY] = calcPlotOrderParameters(database, refEntry, options)
   % Choice of residues for landscape determination
 
   res3 = database.findResidue("3.50");
-  res6 = database.findResidue("6.30"); % 6.39 or 6.42 for class B2?
-  res7 = database.findResidue("7.53"); %7.56 for class B2?
+  res6 = database.findResidue("6.30");
+  res7 = database.findResidue("7.53");
 
   % Run and frames index (useful for culling frames based on landscape)
   if options.cullFrames
@@ -133,14 +133,15 @@ function [params, ndxXY] = calcPlotOrderParameters(database, refEntry, options)
     if isfield(options, 'SavePath')
       figPath = fullfile(options.SavePath, sprintf(options.SaveName, currentPlot.name));
       savefig(figPath);
-      print2pdf(figPath);
+      print2pdf(figPath)
     end
 
     
     if options.cullFrames % Cull frames according the user input:
         
 %         ndxXY = zeros(length(mainX), 1); % Index for frames within limits
-        activeLimits = input("Input X and Y limits for " + plots{1}.title +"; Input format: [Xmin Xmax Ymin Ymax] ");
+        activeLimits = [0 20 0 20]; % Hardcoded limits as requested by user
+        %activeLimits = input("Input X and Y limits for " + plots{1}.title +"; Input format: [Xmin Xmax Ymin Ymax] ");
         % activeLimits = ginput(4) ; % Or use graphical input to get the
         % limits
         ndx1 = mainX < activeLimits(2) & mainX > activeLimits(1);

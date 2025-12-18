@@ -122,8 +122,9 @@ function [params, ndxXY, clusterNdx_filtered] = calcPlotOrderParametersClusters(
     end
 
      if options.cullFrames % Cull frames according the user input:
-        activeLimits = input("Input X and Y limits for " + plots{1}.title +" for " + num2str(options.nClusters) ... 
-             +" clusters; Input format: [XminC1 XmaxC1 YminC1 YmaxC1; XminC2 XmaxC2 YminC2 YmaxC2] ...");
+        activeLimits = repmat([0 20 0 20], options.nClusters, 1); % Hardcoded limits as requested by user
+        %activeLimits = input("Input X and Y limits for " + plots{1}.title +" for " + num2str(options.nClusters) ... 
+        %     +" clusters; Input format: [XminC1 XmaxC1 YminC1 YmaxC1; XminC2 XmaxC2 YminC2 YmaxC2] ...");
 
         figure( 'Position', [10 10 1500 600]); % May need some tinkering
         tiledlayout(1,options.nClusters);

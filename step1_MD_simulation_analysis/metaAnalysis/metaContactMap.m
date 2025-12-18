@@ -1,3 +1,46 @@
+%% Prepare input files:
+
+% % Father directory for all the runs
+% databasePath = 'C:\Users\mahdi\Documents\md2pathDatabase\'; 
+% metadir = 'D:\Telework_library\dopamine_phase_3';
+% 
+% % Assumes 1st directory is reference in alignment and naming!
+% foldersToStudy = {'1-d2_dop_WT','3-d2_bromo_WT','44-D2_WT_DPA_Gi_7JVR', ...
+%     '42-D2_WT_BRC_Gi_7JVR', '34-d2_dpa_barr2_WT_for_Real','35-d2_brc_barr2_WT_forREAL', ...
+%     '21-d2_ris_6cm4'}; 
+% % 
+% % foldersToStudy = {'1-d2_dop_WT','2-d2_dop_T174M-C220L','10-d2_dop_L214M','12-d2_dop_L92G','14-d2_dop_F217M' ...
+% %     '3-d2_bromo_WT','4-d2_bromo_T174M-C220L', ...
+% %     '11-d2_brc_L214M','13-d2_brc_L92G','15-d2_brc_F217M'};
+% 
+% % foldersToStudy = {'3-d2_bromo_WT','4-d2_bromo_T174M-C220L','9-d2_bromo_V130F', ...
+% %     '11-d2_brc_L214M','13-d2_brc_L92G','15-d2_brc_F217M'};
+% 
+% thisSysLabel = {'DA 6VMS','BRC 6VMS','DA 7JVR', ...
+%     'BRC 7JVR', 'DA barr2 AF2','BRC barr2 AF2','RIS 6CM4'};
+% % thisSysLabel = {'DA WT','DA T5.54M-C6.47L','DA L6.41M','DA L3.41G','DA F6.44M', ...
+% %     'BRC WT','BRC T5.54M-C6.47L','BRC L6.41M','BRC L3.41G','BRC F6.44M' };
+% name = 'DD2R_WT_extended';
+% 
+% Generic GPCR numbering from https://gpcrdb.org/residue/residuetable
+gpcrdbRefName = 'DD2R';
+
+% Chains in this order: [receptor, G protein, ligand]
+% Missing chains can be set as '-'.
+chains = 'A-B';
+
+% Reference PDB code that this simulation is based on
+pdbCode = '6VMS';
+pdbChains = 'RA-';
+
+% Inactive state reference PDB, used for dihedral comparison
+pdbCodeInactive = '6CM4';
+pdbInactiveChains = 'A--';
+
+isGPCR = true;
+useDatabaseAlignment = true; % Attempts to align structures/simulations using database alignment
+saveData = true;
+plotrmsd = false ;
 %% Make the meta-direcory
 if isunix
     slash = '/';

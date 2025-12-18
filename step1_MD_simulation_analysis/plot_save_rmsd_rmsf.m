@@ -86,10 +86,7 @@ legend_entries{2} = '';
 
 % Draw helices if helices are defined
 if ~isempty(settings.helices)
-    % Renumbered residues
-    renumber = @(resIds) arrayfun(@(x) find(mainChain.resIds == x), resIds);
-    helices = [renumber(settings.helices(:,1)) renumber(settings.helices(:,2)) ];
-    drawTMhelices(RMSF_mean_CA, helices, mainChain.resIds)
+    drawTMhelices(RMSF_mean_CA, settings.helices, mainChain.resIds)
 end
 xlabel('Residue'); ylabel('RMSF [Angstrom]')
 % Add gaps between the legend entries

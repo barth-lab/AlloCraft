@@ -129,7 +129,10 @@ function  pathCalcdir = prepareAlloPathCalc(simulation, receptorChain, settings,
         atom2 = find(protAtoms == simulation.reSort(i,4));
         atom3 = find(protAtoms == simulation.reSort(i,5));
         atom4 = find(protAtoms == simulation.reSort(i,6));
+        reSortRenum(i,:)
+        [simulation.reSort(i,[1 2]) atom1 atom2 atom3 atom4]
         reSortRenum(i,:) = [simulation.reSort(i,[1 2]) atom1 atom2 atom3 atom4];
+
         fprintf(fileID,'%d %d %d %d %d %d\r\n',reSortRenum(i,:));
     end
 

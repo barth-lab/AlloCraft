@@ -6,6 +6,47 @@
 % 2- Check positions that appear in top allosteric pipelines 
 % 3- 
 
+%% Prepare input files:
+
+% Father directory for all the runs
+databasePath = 'C:\Users\mahdi\Documents\md2pathDatabase\'; 
+metadir = 'D:\Telework_library\dopamine_phase_3';
+% foldersToStudy = {'1-d2_dop_WT','2-d2_dop_T174M-C220L','8-d2_dop_V130F','10-d2_dop_L214M','12-d2_dop_L92G','14-d2_dop_F217M'};
+
+foldersToStudy = {'1-d2_dop_WT','2-d2_dop_T174M-C220L'};
+% 
+% foldersToStudy = {'3-d2_bromo_WT','4-d2_bromo_T174M-C220L','9-d2_bromo_V130F', ...
+%     '11-d2_brc_L214M','13-d2_brc_L92G','15-d2_brc_F217M'};
+
+% thisSysLabel = 'abcdefghijklmnop'; % Can you sing the abc?
+% thisSysLabel = {'WT','T174M-C220L','V130F','L214M','L92G','F217M'};
+thisSysLabel = {'WT','T174M-C220L'};
+name = 'dd2_dpa_new';
+
+
+% Chains in this order: [receptor, G protein, ligand]
+% Missing chains can be set as '-'.
+chains = 'ACB';
+
+abc = char(65:65+25); % Can you sing the abc?
+
+% Analysis parameters:
+nPipes = 10; % number of pipelines to consider in analysis
+topHubs = 25; % Number of top scoring global hubs to consider
+isGPCR = true;
+% Generic GPCR numbering from https://gpcrdb.org/residue/residuetable
+gpcrdbRefName = 'DD2R';
+
+% Reference PDB code that this simulation is based on
+pdbCode = '6VMS';
+pdbChains = 'RA-';
+
+% Inactive state reference PDB, used for dihedral comparison
+pdbCodeInactive = '6CM4';
+pdbInactiveChains = 'A--';
+
+md2pathName = 'md2pathdev';
+alloPathCalcName = 'alloPathCalc_Culled_data';
 %% Make the meta-direcory
 if isunix
     slash = '/';

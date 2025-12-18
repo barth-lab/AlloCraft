@@ -63,10 +63,7 @@ classdef Chain < handle
 
         function output = getLigandAtoms(obj)
             if obj.isSmall
-%                 output = obj.entry.getAtoms('Chain', obj.index, 'NoName', 'H*');
-                indices = selectname(obj.entry.pdb.chainid, obj.name);
-                indices = indices &  ~selectname(obj.entry.pdb.name, 'H*','LP*');
-                output = find(indices);
+                output = obj.entry.getAtoms('Chain', obj.index, 'NoName', 'H*');
             else
                 output = obj.entry.getAtoms('Chain', obj.index, 'Name', 'CA');
             end

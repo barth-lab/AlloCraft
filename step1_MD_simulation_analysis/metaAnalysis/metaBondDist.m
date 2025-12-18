@@ -1,4 +1,63 @@
-%% Load trajectories:
+%% MI per residue
+metadir = 'D:\Telework_library\dopamine_phase_3';
+databasePath = 'C:\Users\mahdi\Documents\md2pathDatabase\'; 
+name = 'DD2R_ligand_binding_distances';
+pdbName = 'prot.pdb';
+
+% Basic: DA + BRC + inactive
+% foldersToStudy = {'1-d2_dop_WT','3-d2_bromo_WT', '2-d2_dop_T174M-C220L', '4-d2_bromo_T174M-C220L', ...
+%      '10-d2_dop_L214M','11-d2_brc_L214M','12-d2_dop_L92G', '13-d2_brc_L92G', ...
+%       '14-d2_dop_F217M', '15-d2_brc_F217M',  '16-d2_dop_I125N', '17-d2_brc_I125N','18a-d2_dop_F217I', '18b-d2_brc_F217I', ...
+%       '19a-d2_dop_L92H','19b-d2_brc_L92H','21-d2_ris_6cm4'};
+% 
+% thisSysLabel = {'DA-WT-Gi','BRC-WT-Gi','DA-T5.54M-C6.47L-Gi','BRC-T5.54M-C6.47L-Gi', ...
+%     'DA-L6.41M-Gi','BRC-L6.41M-Gi','DA-L3.41G-Gi','BRC-L3.41G-Gi', ...
+%     'DA-F6.44M-Gi','BRC-F6.44M-Gi','DA-I4.46N-Gi','BRC-I4.46N-Gi','DA-F6.44I-Gi','BRC-F6.44I-Gi', ...
+%     'DA-L3.41H-Gi','BRC-L3.41H-Gi','RIS-inactive'};
+
+% DA, BRC, AP comparison
+% foldersToStudy = {'1-d2_dop_WT','3-d2_bromo_WT','61-D2_apom_GiH5_WT',...
+%       '14-d2_dop_F217M', '15-d2_brc_F217M', '63-D2_apom_GiH5_F217M' ...
+%       '16-d2_dop_I125N', '17-d2_brc_I125N', '62-D2_apom_GiH5_I125N'};
+% 
+% thisSysLabel = {'DA-WT-Gi','BRC-WT-Gi','APM-WT-Gi', ...
+% 'DA-F6.44M-Gi','BRC-F6.44M-Gi', 'APM-F6.44M-Gi'...
+% 'DA-I4.46N-Gi','BRC-I4.46N-Gi', 'APM-I4.46N-Gi'};
+
+% DA + SNPs
+% foldersToStudy = {'1-d2_dop_WT', '2-d2_dop_T174M-C220L','10-d2_dop_L214M', ...
+%     '12-d2_dop_L92G','8-d2_dop_V130F','14-d2_dop_F217M', '16-d2_dop_I125N', '18a-d2_dop_F217I', '19a-d2_dop_L92H',  ...
+%      '70b-D2_DA_V444I_VC_rescale','71b-D2_DA_I181F_BW561_VC_rescale'};
+% 
+% thisSysLabel = {'DA-WT-Gi','DA-T5.54M-C6.47L-Gi','DA-L6.41M-Gi','DA-L3.41G-Gi','DA-V4.51F-Gi', 'DA-F6.44M-Gi', ...
+%     'DA-I4.46N-Gi','DA-F6.44I-Gi', 'DA-L3.41H-Gi','DA-V4.44I','DA-I5.61F'};
+
+md2pathName = 'md2pathdev';
+alloPathCalcName = 'alloPathCalc_Culled_data';
+
+% Generic GPCR numbering from https://gpcrdb.org/residue/residuetable
+gpcrdbRefName = 'DD2R';
+
+% Chains in this order: [receptor, G protein, ligand]
+% Missing chains can be set as '-'.
+chains = 'A-B';
+
+% Reference PDB code that this simulation is based on
+pdbCode = '6VMS';
+pdbChains = 'RA-';
+
+% Inactive state reference PDB, used for dihedral comparison
+pdbCodeInactive = '6CM4';
+pdbInactiveChains = 'A--';
+
+isGPCR = true;
+frames2skip = 500; % 50 ns
+useDatabaseAlignment = true; % Attempts to align structures/simulations using database alignment
+attempt2AlignTrajs = false;
+paperColors;
+%%
+
+%% Modernized meta PCA, fit for AlloDy 1.0:
 
 metaLoadAlign;
 colormapName = 'parula';

@@ -96,13 +96,10 @@ classdef Database < handle
         end
 
         function obj = label(obj, entryIndex, bwMapPath)
-            
             bwMap = readtable(bwMapPath, 'MissingRule', 'omitrow', 'TextType', 'char', 'ReadVariableNames', false);
             bwMap = bwMap(2:end, 2:3);
             % entry = obj.entries{entryIndex};
             entryColumn = obj.residues{1}{:, entryIndex};
-            % Clear the label first just in case:
-            obj.residues{1}.Label = repmat("",length(entryColumn),1);
             % entryColumn = entryResIds(obj.residues{:, entryIndex});
 
             for mapRowIndex = 1:height(bwMap)
