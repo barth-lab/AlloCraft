@@ -1,4 +1,4 @@
-# AlloDy
+# AlloCraft
 A package to analyze molecular dynamics trajectories of proteins, with a focus on allosteric pathways and ensemble differences. Description of the package, installation, and instructions for running can be found here. Architecture of the code can be found in [reference.md](/reference.md)
 
 
@@ -59,13 +59,13 @@ https://ch.mathworks.com/help/matlab/matlab_env/add-folders-to-matlab-search-pat
 Next, get the Bioinformatics Toolbox for Matlab, more details regarding add-on management can be found here:
 https://ch.mathworks.com/help/matlab/matlab_env/get-add-ons.html
 
-Finally download AlloDy either manually from this repo or by cloning it
+Finally download AlloCraft either manually from this repo or by cloning it
 
-For the smoothest experience, AlloDy also uses visual molecular dynamics (VMD) to transform .xtc files to .dcd and to predict secondary structure of a protein. You can download it for free from here: https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD 
+For the smoothest experience, AlloCraft also uses visual molecular dynamics (VMD) to transform .xtc files to .dcd and to predict secondary structure of a protein. You can download it for free from here: https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD 
 
 Don't forget to add VMD to your path variable too!
 
-You can run AlloDy without having VMD installed if you provide .dcd trajectories instead of .xtc and if you provide *helices* variable in the input scripts (*input_md2path.m* and *input_kldiv.m*).
+You can run AlloCraft without having VMD installed if you provide .dcd trajectories instead of .xtc and if you provide *helices* variable in the input scripts (*input_md2path.m* and *input_kldiv.m*).
 
 ## Instructions:
 
@@ -105,6 +105,7 @@ Typical runtime for calculations:
 - MDToolbox for Matlab: Matsunaga, and Sugita, J Chem Phys (2018)
 
 
-## Contact: mahdi.hijazi@epfl.ch (2022)
+## Contact: mahdi.hijazi.mh@gmail.com (2025)
 ##
+
 
