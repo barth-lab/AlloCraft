@@ -1,0 +1,45 @@
+
+- matDCD: a DCD reader for Matlab -
+Written by Justin Gullingsrud, based on the DCD code in VMD
+
+* Features *
+- supports Charmm and xplor-format DCD files
+- can read both big- and little-endian storage formats
+- can specify which atom indices to load; no need to load entire file
+
+* Known issues *
+- Does not support dcd files with fixed atoms 
+
+* Installation *
+All the .m files in the distribution should reside in the same directory.  
+Place them anywhere you wish, then add that directory to your matlab path
+using the matlab "addpath" command.
+
+* Example usage *
+
+1. alanin.dcd is a DCD file containing 100 frames of a 66 atom trajectory.  
+xyz will be a 100x198 matrix with each row containing coordinates in the
+order [x1 y1 z1 x2 y2 z2 ...]
+
+>> xyz = readdcd('/home/justin/alanin.dcd', 1:66);
+
+
+2. Same dcd file; now we read only a list of selected atoms.
+
+>>> atomlist = [2 5 9 13];
+>>> xyz2 = readdcd('/home/justin/alanin.dcd', atomlist);
+
+The rows of xyz2 will contain coordinates [x2 y2 z2 x5 y5 z5 ...]
+
+
+3. Writing a DCD: say we modified xyz and want save it in a new DCD file.
+We split the coordinates into separate arrays for the x, y, and z coordinates.
+The syntax is:
+
+x=xyz(:,1:3:end);
+y=xyz(:,2:3:end);
+z=xyz(:,3:3:end);
+writedcd('alanin_new.dcd', x,y,z);
+
+
+

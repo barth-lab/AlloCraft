@@ -1,0 +1,2 @@
+In this folder we find functions to calculate correlations from MD trajectories using pearson coefficients ('corrMap') or mutual information, along with entropies. 
+The  same analysis can be done with dihedrals, where the function 'calcalldihedralsfromtrajs' extractts backbone (phi and psi) and side  chain (chi1 ... chiN) dihedrals.

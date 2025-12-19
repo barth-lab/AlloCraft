@@ -17,6 +17,7 @@ classdef Simulation < handle
 
     methods
         function obj = Simulation(entry)
+            global settings;
             obj.entry = entry;
         end
 
@@ -358,6 +359,7 @@ classdef Simulation < handle
 
     methods(Static)
         function simulation = query(entry, query)
+            global settings;
             runDirs = dir(query);
             runCount = length(runDirs);
 
@@ -367,7 +369,7 @@ classdef Simulation < handle
 
             for runIndex = 1:runCount
                 directory = runDirs(runIndex);
-                runTraj = readdcdmat(fullfile(directory.folder, directory.name, "traj.dcd"));
+                runTraj = readdcdmat(fullfile(directory.folder, directory.name, settings.xtcName));
 
                 if runIndex == 1
                     minTraj = size(runTraj,1);

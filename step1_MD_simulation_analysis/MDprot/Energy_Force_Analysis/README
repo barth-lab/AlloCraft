@@ -1,0 +1,5 @@
+In this folder we find the codes I use for energy and force analysis of trajectories.
+To calculate pairwise energies, I use gRINN, which calcualtes non-bonded interactions from MD trajectories (DCD or XTC)
+https://grinn.readthedocs.io/en/latest/
+
+To calculate the pairwise forces, I use gmx_fda, found at https://github.com/HITS-MBM/gromacs-fda

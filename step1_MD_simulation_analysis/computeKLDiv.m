@@ -123,7 +123,7 @@ function [kl1, kl2, m2, pVal, pVal2, kl2H0 ] = computeKLDiv(dihedralsRef, dihedr
         parfor dihx = 1:dihCount
             xRef = dihedralsRef(:, dihx);
             x = dihedralsTest(:,dihx);
-            dihx
+
             for dihy = 1:dihCount
                 if dihy >= dihx
                     break;

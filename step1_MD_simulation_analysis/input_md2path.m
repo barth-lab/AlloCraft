@@ -10,19 +10,80 @@
 
 
 %% Main input variables:
+global settings;
 
-% Main data directory
-settings.mydir = 'D:\Telework_library\dopamine_phase_3\16-d2_dop_I125N';
+% Get the full path to the currently running script
+current_script_path = mfilename('fullpath');
+% Get the directory of the currently running script
+[current_script_dir, ~, ~] = fileparts(current_script_path);
+% Define the project root as the parent directory of the script's directory
+PROJECT_ROOT = fileparts(current_script_dir);
+
+
+% Main data directo
+% settings.mydir = '../data/DA_F6.44M_S5.46G';
+settings.mydir = fullfile(PROJECT_ROOT, 'data', 'DA_F6.44M_S5.46G');
+
+% Add src directory to path
+% addpath('src');
+% addpath('MDprot/mdtoolbox');
+% addpath('MDprot/Useful_tools');
+% addpath('util');
+% addpath('MDprot');
+% addpath('MDprot/matdcd-1.0');
+% addpath('MDprot/Entropy_MI');
+% addpath('MDprot/GPCR_tools');
+% addpath('alloPathCalc');
+% addpath('extra_scripts');
+addpath(fullfile(current_script_dir, 'src'));
+addpath(fullfile(current_script_dir, 'MDprot', 'mdtoolbox'));
+addpath(fullfile(current_script_dir, 'MDprot', 'Useful_tools'));
+addpath(fullfile(current_script_dir, 'util'));
+addpath(fullfile(current_script_dir, 'MDprot'));
+addpath(fullfile(current_script_dir, 'MDprot', 'matdcd-1.0'));
+addpath(fullfile(current_script_dir, 'MDprot', 'Entropy_MI'));
+addpath(fullfile(current_script_dir, 'MDprot', 'GPCR_tools'));
+addpath(fullfile(current_script_dir, 'alloPathCalc'));
+addpath(fullfile(current_script_dir, 'extra_scripts'));
+
 
 % Path for the database used by md2path
-settings.databasePath = 'C:\Users\mahdi\Documents\md2pathDatabase\';
+% settings.databasePath = '../data/Databases/';
+settings.databasePath = fullfile(PROJECT_ROOT, 'data', 'Databases');
 settings.systemName = 'DD2R'; % Points to the residue table in the database
 
+
+
+%% Define the project root directory
+% PROJECT_ROOT = '/home/asengar/Downloads/trial_github/AlloDy_Analysis_Repo'; 
+
+% Main data directory
+%settings.mydir = fullfile(PROJECT_ROOT, 'data', 'DA_F6.44M_S5.46G');
+
+% Add directories to path
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'src'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'MDprot', 'mdtoolbox'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'MDprot', 'Useful_tools'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'util'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'MDprot'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'MDprot', 'matdcd-1.0'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'MDprot', 'Entropy_MI'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'MDprot', 'GPCR_tools'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'alloPathCalc'));
+%addpath(fullfile(PROJECT_ROOT, 'scripts', 'extra_scripts'));
+
+% Path for the database used by md2path
+%settings.databasePath = fullfile(PROJECT_ROOT, 'data', 'Databases', filesep);
+%settings.systemName = 'DD2R'; % Points to the residue table in the database
+
+
+
 % Name of the trajectory file in each run
-settings.xtcName = 'step7_noPBC_prot.xtc';
+%settings.xtcName = 'step7_noPBC_prot.xtc';
+settings.xtcName = 'traj.dcd';
 
 % Number of frames to remove at the start of the simulation
-settings.frames2skip = 500;
+settings.frames2skip =1000;
 
 % Chains in this order: [receptor, G protein, ligand]
 % Missing chains can be set as '-'.
@@ -40,19 +101,14 @@ settings.pdbInactiveChains = 'A--';
 % Note: double check the alignment in database.residues{1}: if a
 % misalignment exists in the residues used from conf. landscape
 % calculation, there will an error!
-settings.pdbCodeExtra = {'6LFO','7F1R'};
-settings.pdbChainsExtra = {'RAD','RA-'};
+% settings.pdbCodeExtra = {'6LFO','7F1R'};
+% settings.pdbChainsExtra = {'RAD','RA-'};
 
-% Which pdb should be used as reference for generic GPCR numbering?
-% 2 means settings.pdbCode will be taken as reference
-% 3 means settings.pdbCodeInactive will be
-settings.refPDBNdx = 2; 
-
-% Number of runs
-settings.numRuns = 5;
+% Number of run3
+settings.numRuns = 3;
 
 % How many frames to skip when saving xtcs to dcds
-settings.stride = 5;
+settings.stride = 1;
 
 % Actiavtes GPCR specfic options (calculating 7 TM helices and
 % GPCR allosteric path calculation, as well as planned GPCR order parameters)
@@ -67,7 +123,23 @@ settings.excludedResidues = [];
 % The residues belonging to the 7 helical turns of a GPCR, If
 % empty, the code will attempt to find them by calling VMD and extracting a
 % secondary structure variable.
-settings.helices = [];
+settings.helices = [ [2 32]
+    [37 68]
+    [73 108]
+    [114 143]
+    [156 196]
+    [198 235]
+    [240 265]
+    ];
+
+settings.helices = [ [1 31]
+    [36 67]
+    [72 107]
+    [113 142]
+    [155 195]
+    [197 234]
+    [239 264]
+    ];
 
 % If binding site/ligand interacting residues are not defined,
 % the code will calculate contact maps of the protein and ligand.
@@ -85,7 +157,6 @@ settings.baiResidues = [];
 % Do principle component analysis on the ligand binding pose as
 % well as the receptor conformations
 settings.doPCA = true;
-settings.kPrinComp = 2;
 
 % Number of clusters for PCA analysis of the ligand, if empty,
 % the code will calculate it automatically, BUT it will take time!!!
@@ -95,21 +166,17 @@ settings.kClusters = [];
 % only give this option if kClusters is empty!!!
 settings.kmax = 15;
 
-% Type of input to do PCA on the protein trajectory
+% Type of input to pca_2_prot to do PCA on the protein trajectory
 % Could be: 'CA', 'DihAll', 'DihBB', 'DihSC', and 'Distances'
 % 'Distances' requires additional options: settings.NdisPCA and
 % settings.CGPCA
 settings.trjType = 'CA';
 
-% Type of input to do PCA on ligand trajectory:
+% Type of input to pca_1_ligand to do PCA on ligand trajectory:
 % Could be 'Default', 'VectorsCoord', and 'DistancesCoord'
 % 'Default' gives CAs if ligand is peptide or not H atoms if ligand is
 % small
 settings.trjTypeLigand = 'Default'; 
-
-% Custom PCA selection (residue numbers):
-settings.CustomPCAselection = [];
-settings.CustomPCAName =[];
 
 % Remove frames that do not belong to desired states from dihedral/MI
 % calculation

@@ -1,41 +1,98 @@
 % metaKLDiv: meta-analysis of KLDiv from several directories
 % 
 % % Input section
-settings.databasePath = 'path/to/md2pathDatabase/'; 
-% Father directory for all the runs
-settings.metadir = 'path/to/simulation/meta/dir';
-
-settings.foldersToStudy = {'6-4amj_TS_alp','4-4amj_TS_cvd','18-4bvn_TS_cyn','16-2y01_TS_dbt','9-2y03_TS_iso'};
-
-settings.thisSysLabel = {'ALP','CVD','CYN','DBT','ISO'};
-settings.name = 'b1AR_TS';
-
-settings.gpcrdbRefName = 'b1AR_wild_turkey';
-
-% Reference system for the KLDiv calculations
-settings.refdir =  'path/to/simulation/ref/dir';
-settings.refName = 'Apo';
-
-% Chains in this order: [receptor, G protein, ligand]
-% Missing chains can be set as '-'.
-settings.chains = 'A--';
-
-% Reference PDB code that this simulation is based on
-settings.pdbCode = '6H7J';
-settings.pdbChains = 'AC-';
-
-% Inactive state reference PDB, used for dihedral comparison
-settings.pdbCodeInactive = '4AMJ';
-settings.pdbInactiveChains = 'B--';
-
-settings.isGPCR = true;
-settings.includeLigPathwayCalc = false;
-settings.md2pathName = 'md2pathdev';
+% settings.databasePath = 'C:\Users\mahdi\Documents\md2pathDatabase\'; 
+% % Father directory for all the runs
+% settings.metadir = 'D:\Telework_library\beta1_project';
+% % 
+% % 
+% % % For initial comparison:
+% % settings.foldersToStudy = {'4-4amj_TS_cvd','2-beta1_iso_nb80_TS_A5.58Y-L7.53Y','1-beta1_iso_nb80_TS','6-4amj_TS_alp', '7-4amj_TS_cyn','10-6h7l_dbt'};
+% % 
+% % settings.thisSysLabel = {'CVD','ISO-YY-Nb','ISO-Nb','ALP','CYN','DBT-Nb'};
+% % % 
+% % 
+% % % For a more complete comparison:
+% % % settings.foldersToStudy = {'1-beta1_iso_nb80_TS','2-beta1_iso_nb80_TS_A5.58Y-L7.53Y', ...
+% % %     '4-4amj_TS_cvd','5-4amj_TS_iso','6-4amj_TS_alp', '7-4amj_TS_cyn','8-4amj_TS_dbt','9-2y03_TS_iso','11-6h7l_YY_dbt','12-6h7o_cyn','13-6h7o_YY_cyn'};
+% % 
+% % % settings.thisSysLabel = {'ISO-nb80','ISO-nb80YY','CVD','ISO','ALP','CYN','DBT', 'ISO-2y03', ...
+% % %     'DBT-nb80YY','CYN-nb80','CYN-nb80YY'};
+% % 
+% % 
+% % For comparison with Grahl et al. (2020): 41467_2020_15864_MOESM3_ESM.xlsx
+% 
+% % TS only no Nb
+% % settings.foldersToStudy = {'6-4amj_TS_alp','4-4amj_TS_cvd','18-4bvn_TS_cyn','16-2y01_TS_dbt','9-2y03_TS_iso'};
+% % 
+% % settings.thisSysLabel = {'ALP','CVD','CYN','DBT','ISO'};
+% % settings.thisSysNumExp = [1 3 4 5 6 ]; % For experimental comparison
+% 
+% % % Using Nb bound structures (obsolete)
+% % % settings.foldersToStudy = {'6-4amj_TS_alp','4-4amj_TS_cvd','12-6h7o_cyn','10-6h7l_dbt','1-beta1_iso_nb80_TS', ...
+% % %     '13-6h7o_YY_cyn','11-6h7l_YY_dbt','2-beta1_iso_nb80_TS_A5.58Y-L7.53Y'};
+% % % 
+% % % settings.thisSysLabel = {'ALP','CVD','CYN-nb','DBT-nb','ISO-nb','CYN-nb-YY','DBT-nb-YY','ISO-nb-YY'};
+% % % settings.thisSysNumExp = [1 3 4 5 6 10 11 12]; % For experimental comparison
+% % 
+% % % Using inactive structures
+% % % settings.foldersToStudy = {'6-4amj_TS_alp','4-4amj_TS_cvd','18-4bvn_TS_cyn','16-2y01_TS_dbt','9-2y03_TS_iso', ...
+% % %    '20-4amj_YY_alp','15-4amj_YY_cvd', '19-4bvn_YY_cyn' ,'17-2y01_YY_dbt','14-2y03_YY_iso'};
+% % % 
+% % % settings.thisSysLabel = {'ALP','CVD','CYN','DBT','ISO','ALP-YY','CVD-YY','CYN-YY','DBT-YY','ISO-YY'};
+% % % settings.thisSysNumExp = [1 3 4 5 6 7 9 10 11 12]; % For experimental comparison
+% %
+% % % YY variants only:
+% % % settings.foldersToStudy = { ...
+% % %    '20-4amj_YY_alp','15-4amj_YY_cvd', '19-4bvn_YY_cyn' ,'17-2y01_YY_dbt','14-2y03_YY_iso'};
+% % % 
+% % % settings.thisSysLabel = {'ALP-YY','CVD-YY','CYN-YY','DBT-YY','ISO-YY'};
+% % % settings.thisSysNumExp = [ 7 9 10 11 12]; % For experimental comparison
+% %
+% % % For comparison with more recent assignments: 15NV_b1ARYY_peaklists.xlsx
+% % % settings.foldersToStudy = {'2-beta1_iso_nb80_TS_A5.58Y-L7.53Y','14-2y03_YY_iso','15-4amj_YY_cvd','20-4amj_YY_alp', '19-4bvn_YY_cyn','17-2y01_YY_dbt',};
+% % % 
+% % % settings.thisSysLabel = {'ISO-nb80-YY','ISO-YY','CVD-YY','ALP-YY','CYN-YY','DBT-YY'};
+% % % settings.thisSysNumExp = [1 3 4 5 7 8]; % For experimental comparison
+% % 
+% % 
+% % % (almost) full set for PCA:
+% % settings.foldersToStudy = {'6-4amj_TS_alp','4-4amj_TS_cvd','18-4bvn_TS_cyn','16-2y01_TS_dbt','9-2y03_TS_iso', ...
+% %    '20-4amj_YY_alp','15-4amj_YY_cvd', '19-4bvn_YY_cyn' ,'17-2y01_YY_dbt','14-2y03_YY_iso','13-6h7o_YY_cyn', ...
+% %    '11-6h7l_YY_dbt','2-beta1_iso_nb80_TS_A5.58Y-L7.53Y'};
+% % 
+% % settings.thisSysLabel = {'ALP','CVD','CYN','DBT','ISO','ALP-YY','CVD-YY','CYN-YY','DBT-YY','ISO-YY', ...
+% %     'CYN-YY-nb','DBT-YY-nb','ISO-YY-nb'};
+% % % 
+% % 
+% % settings.name = 'b1AR_TS';
+% 
+% settings.gpcrdbRefName = 'b1AR_wild_turkey';
+% 
+% % Reference system for the KLDiv calculations
+% settings.refdir =  'D:\Telework_library\beta1_project\3-4amj_TS_apo';
+% settings.refName = 'Apo';
+% 
+% % Chains in this order: [receptor, G protein, ligand]
+% % Missing chains can be set as '-'.
+% settings.chains = 'A--';
+% 
+% % Reference PDB code that this simulation is based on
+% settings.pdbCode = '6H7J';
+% settings.pdbChains = 'AC-';
+% 
+% % Inactive state reference PDB, used for dihedral comparison
+% settings.pdbCodeInactive = '4AMJ';
+% settings.pdbInactiveChains = 'B--';
+% 
+% settings.isGPCR = true;
+% settings.includeLigPathwayCalc = false;
+% settings.md2pathName = 'md2path';
 
 % Which types of dihedrals to be considered for KL1 calculation:
 % phi = 1; psi = 2; chi1 = 3; chi2 = 4; ... chi5 = 7
 % settings.dihedralTypes = [1 2 3 4 5 6 7]; 
-settings.dihedralTypes = 7; % For now called from input script
+% settings.dihedralTypes = 7; % For now called from input script
 %% Make the meta-direcory
 if isunix
     slash = '/';

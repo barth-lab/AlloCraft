@@ -1,20 +1,14 @@
 % Features to add:
 % 
-% * Inherent double check for pathway calculation (calculate pathways again at
+% Inherent double check for pathway calculation (calculate pathways again at
 % 75% of simulation length?), in addition to convergence criteria
 %
-% * Fix VMD trajectory so it can be called from any folder AND so it can take
-% any VMD compatible traj. file as input, not only xtc
-%
-% * Add deltaMI for comparison between two ensembles, visualize deltaMI for
-% a node with +ve and -ve between this node and all other nodes (residues)
-%
-% * Protein-protein contact map, in addition to prot-lig and prot-effector
-% * Protein pose clustering (RMSD?) + extraction of representative protein
+% Protein-protein contact map, in addition to prot-lig and prot-effector
+% Protein pose clustering (RMSD?) + extraction of representative protein
 % pose from every cluster. This is already done with PCA, but it leaves a
 % lot to be desired
-% * Ligand binding residues to RMSF plot
-% * Ligand atoms instead of atom numbers on RMSF ligand plot
+% Ligand binding residues to RMSF plot
+% Ligand atoms instead of atom numbers on RMSF ligand plot
 %% This set of scripts/functions aims to take the output of an MD simulation
 % and calculate allosteric pathways, going thru several steps of analysis
 
@@ -46,9 +40,6 @@ assert(logical(exist(settings.mydir, 'dir')), "Directory does not exist!!! Pleas
 if ~isfield(settings,'pdbCodeExtra') 
     settings.pdbCodeExtra='';
 end
-if ~isfield(settings,'refPDBNdx') 
-    settings.refPDBNdx=2;
-end
 if ~isfield(settings,'includeLigPathwayCalc') 
     settings.includeLigPathwayCalc=false;
 end
@@ -58,34 +49,30 @@ end
 if ~isfield(settings,'MIWeightPaths') 
     settings.MIWeightPaths=true;
 end
-if ~isfield(settings,'kPrinComp') 
-    settings.kPrinComp=2;
-end
 if settings.doPCA && ~isfield(settings,'trjType') 
-    settings.trjType = 'CA';
+    trjType = 'CA';
 elseif settings.doPCA
+    trjType = settings.trjType;
     % Special case: distances
-    if strcmp(settings.trjType,'Distances') && ~isfield(settings,'NdisPCA') 
-        settings.NdisPCA = 1000; % Take highest variance distances for protein PCA
+    if strcmp(trjType,'Distances') && ~isfield(settings,'NdisPCA') 
+        NdisPCA = 1000; % Take highest variance distances for protein PCA
     end
-    if strcmp(settings.trjType,'Distances') && ~isfield(settings,'CGPCA')
-        settings.CGPCA = 4; % Coarse graining by taking every Nth residue for distance calc
+    if strcmp(trjType,'Distances') && ~isfield(settings,'CGPCA')
+        CGPCA = 4; % Coarse graining by taking every Nth residue for distance calc
     end
 end
 if settings.doPCA && ~isfield(settings,'trjTypeLigand') 
-    settings.trjTypeLigand = 'Default'; % CA for peptide ligand, heavy atoms for small molecules
+    trjTypeLigand = 'Default'; % CA for peptide ligand, heavy atoms for small molecules
+elseif settings.doPCA
+    trjTypeLigand = settings.trjTypeLigand;
 end
-if ~isfield(settings,'CustomPCAselection')
-    settings.CustomPCAselection = [];
-end
-
 
 %% Load, fetch and align PDB files
 
 database = Database(settings.databasePath);
 
 % Chains: [receptor, G protein, ligand]
-database.read(fullfile(settings.mydir, "prot.pdb"), settings.chains, "Protein");
+database.read(fullfile(settings.mydir, "prot_pymol.pdb"), settings.chains, "Protein");
 
 if ~isempty(settings.pdbCode)
     database.fetch(settings.pdbCode, settings.pdbChains, 1);
@@ -122,15 +109,14 @@ end
 
 % Temp section until Mathworks decides to fix how copyfile works on Linux
 % systems
-if isunix || ismac
+if isunix
     slash = '/';
     copy = 'cp';
 elseif ispc
     slash = '\';
     copy = 'copy';
 end
-md2pathdir = fullfile(settings.mydir, "md2pathdev");
-saveVarName = fullfile(md2pathdir, "workspace.mat"); % Where to save important variables
+
 %% Initialize the directory where output and figures will be saved
 
 % TODO: Remove? Only used once
@@ -142,11 +128,13 @@ if length(name) > 3 && name(2) == '-' % just my directory naming convention
     name = name(3:end);
 elseif length(name) > 3 && name(3) == '-'
     name = name(4:end);
-elseif length(name) > 4 && name(4) == '-'
-    name = name(5:end);
 end
 
 mainEntry.name = name;
+
+
+md2pathdir = fullfile(settings.mydir, "md2pathdev");
+saveVarName = fullfile(md2pathdir, "workspace.mat"); % Where to save important variables
 
 % Create md2pathdir if it does not exist
 if ~exist(md2pathdir, 'dir')
@@ -162,14 +150,15 @@ end
 % Possibly copy some of the PDB to md2pathdir
 % e.g. copyfile(database.entries{1}.path, fullfile(md2pathdir, "foo.pdb"));
 
+
 %% Add labels
 
-% Add labels with Ballesteros-Weinstein notation, aligned with settings.refPDBNdx
+% Add labels with Ballesteros-Weinstein notation, aligned with the 2nd
 % database entry
 % Exported from GPCRdb (https://gpcrdb.org/residue/residuetable)
 if length(database.entries) > 1 && isfield(settings, 'systemName')
     residueTablePath = fullfile(database.dir, settings.systemName + "_residue_table.xlsx");
-    database.label(settings.refPDBNdx, residueTablePath);
+    database.label(2, residueTablePath);
 end
 
 %% Find mutations compared to a downloaded reference sequence:
@@ -185,17 +174,10 @@ end
 % areThereDCDs = dir([settings.mydir '/run*/traj.dcd']);
 areThereDCDs = dir(fullfile(settings.mydir, "run*", "traj.dcd"));
 
-% Get directory where main script is running
-mfilePath = mfilename('fullpath');
-if contains(mfilePath,'LiveEditorEvaluationHelper')
-    mfilePath = matlab.desktop.editor.getActiveFilename;
-end
-disp(mfilePath);
-mfileDir = fileparts(mfilePath);
-
 if length(areThereDCDs) < settings.numRuns
     % run VMD from command line:  vmd -dispdev text -e
-    pathToScript = fullfile(mfileDir, "load_save.tcl");  % assumes tcl script is in same directroy as main script
+    [scriptPath, ~, ~] = fileparts(mfilename('fullpath'));
+    pathToScript = fullfile(scriptPath, "load_save.tcl");  % assumes script is in the same directory
     cmdStr       = "vmd -dispdev text -e " + pathToScript + " -args " + settings.mydir + " " + num2str(settings.numRuns) + " " + num2str(settings.stride) + " " + database.entries{1}.path + " " + settings.xtcName;
     system(cmdStr);
     add2log(md2pathdir, "Transformed .xtc files to .dcd files with the following command: """ + cmdStr + """");
@@ -262,7 +244,7 @@ rcut2 = 5;
 if isempty(settings.bsResidues) && mainEntry.hasChain(Chains.ligand)
     add2log(md2pathdir, 'Calculating contact map of receptor with ligand');
 
-    [contactsPerRun, chainBAtomIndices, contactRes] = mainSim.computeContacts(mainChain, ligandChain, 'StartFrame', settings.frames2skip + 1,'RCut1', rcut1, 'RCut2', rcut2);
+    [contactsPerRun, chainBAtomIndices, ~] = mainSim.computeContacts(mainChain, ligandChain, 'StartFrame', settings.frames2skip + 1,'RCut1', rcut1, 'RCut2', rcut2);
     receptorLigandResIds = plot_save_contact_map(contactsPerRun, mainChain, ligandChain, chainBAtomIndices, ...
         'ImportantCutoff', 0.55, 'RCut', rcut2, 'SaveDir', md2pathdir,'SaveXlsSheet',"Full simulation"); %FIX MUMBER SHOWN ON TITLE OF HEATMAP
 
@@ -301,14 +283,14 @@ end
 %% PCA section:
 
 if settings.doPCA
-    add2log(md2pathdir, "PCA analysis commenced (lol at the double analysis)");
-    pcadir = fullfile(md2pathdir, "pca_Test");
+    add2log(md2pathdir, "PCA analysis commenced");
+    pcadir = fullfile(md2pathdir, "pca");
 
     if ~exist(pcadir, 'dir')
         mkdir(pcadir);
         add2log(md2pathdir, "Creating pca directory in " + md2pathdir);
     end
-%     kPrinComp = 2; % Number of principal components to take into consideration
+    kPrinComp = 2; % Number of principal components to take into consideration
     rng(1); % For reproducibility
     
     % Initalize color index C
@@ -329,11 +311,7 @@ if settings.doPCA
 
        % Run the ligand PCA module: use trjTypeLigand to change what goes
        % into the PCA 
-%         pca_1_ligand;
-         [indexOfCluster_pca, centroid_pca, p, ind_centers, pca_frame_centers, rmsdLigandpcaCenter] ...
-             = calcPlotpca(mainSim, C, settings, 'ChainNdx', Chains.ligand,'SavePath', pcadir, ...
-             'saveVarName',saveVarName,'isLigand', true, 'receptorLigandResIds',receptorLigandResIds);
-        add2log(md2pathdir, "Ligand PCA done");
+        pca_1_ligand;
         % output:
         % FILE: pcaCenterFrame_run.txt
         %  ligandReceptorpca.pdb
@@ -344,46 +322,34 @@ if settings.doPCA
         save(saveVarName,'rmsdLigandpcaCenter','-append');
     end
 
-  %% Run the receptor PCA module: use trjType to change what goes into the
+    % Run the receptor PCA module: use trjType to change what goes into the
     % PCA
-%     pca_2_prot;
-[indexOfCluster_pcaProt, centroid_pcaProt, pProt, ind_centersProt, pca_frame_centersProt, rmsdpcaCenter] ...
-             = calcPlotpca(mainSim, C, settings, 'ChainNdx', Chains.receptor,'SavePath', pcadir, ...
-             'saveVarName',saveVarName,'SaveName',"prot");
+     pca_2_prot;
+    % output: same as pca_ligand but for receptor
 
-        add2log(md2pathdir, "Receptor PCA done");
-
-%% Additional optional PCA?
-if ~isempty(settings.CustomPCAselection)
-customAtomNdx = mainEntry.getAtoms('Chain', mainChain.index, 'Name', 'CA','Residues',settings.CustomPCAselection );
-[indexOfCluster_pcaCustom, centroid_pcaCustom, pCustom, ind_centersCustom, pca_frame_centersCustom, rmsdpcaCenterCustom] ...
-             = calcPlotpca(mainSim, C, settings, 'ChainNdx', Chains.receptor,'SavePath', pcadir, ...
-             'saveVarName',saveVarName,'SaveName',string(settings.CustomPCAName), 'customAtomNdx',customAtomNdx);
-end
 end
 
 
 %% Calculate GPCR order parameters to assess state of the system
 % Filter frames according to activation states if needed
 if ~isfield(settings,'cullStates') 
-settings.cullStates=false;
+settings.cullStates=true;
 end
 
 if settings.isGPCR
    [params, ndxXY] = calcPlotOrderParameters(database, database.entries{3}, 'SavePath', ...
        md2pathdir,'frames2skip',settings.frames2skip + 1,'cullFrames', settings.cullStates);
-%    if settings.doPCA
-%    [~, ndxXYClusters, clusterNdx_filtered] = calcPlotOrderParametersClusters(database, database.entries{3}, ...
-%        indexOfCluster_pca , 'SavePath', md2pathdir,'frames2skip',settings.frames2skip + 1 ,'cullFrames', settings.cullStates);
-%    save(saveVarName,'ndxXYClusters','clusterNdx_filtered','-append')
-%    end
+   if settings.doPCA
+   [~, ndxXYClusters, clusterNdx_filtered] = calcPlotOrderParametersClusters(database, database.entries{3}, ...
+       indexOfCluster_pca , 'SavePath', md2pathdir,'frames2skip',settings.frames2skip + 1 ,'cullFrames', settings.cullStates);
+   save(saveVarName,'ndxXYClusters','clusterNdx_filtered','-append')
+   end
 
    save(saveVarName,'params','ndxXY','-append');
 
 end
 
 %% Calculate dihedrals from trajs
-
 if settings.includeLigPathwayCalc
     receptorResIds = mainChain.concatResIds(ligandChain);
 else
@@ -396,31 +362,31 @@ mainSim.computeDihedrals(  ...
     'ResIds', receptorResIds, ...
     'StartFrame', settings.frames2skip + 1 ...
 );
-% If computeDihedrals complains that "Dimensions of arrays being  
-% concatenated are not consistent", there are overlapping residue numbers
-%  in different chains, input mainChain as first argument to the
-% function to resolve that
-% %% Compare dihedral distributions of selected dihedrals to references
-% % Ex: compare chi's of conserved rotamers in class A GPCRs
-% 
-% if settings.isGPCR
-%     % Choose features
-%     resImp = ["3.50","5.54","6.44","6.47","6.48","7.49" ,"7.53"];
-% %     resImp = ["3.32","5.42","5.46","7.43"];
-%     dihPairs = [1 2; 2 3;3 4];
-% 
-%     for pair = 1:size(dihPairs,1)
-%      [idxCell] = dihedralClusterReferences(database,resImp,'dihij',dihPairs(pair,:));
-%      savefig(fullfile(md2pathdir,"dihedralClusters_"+num2str(pair)))
-%     end
-%     % To do: 
-%     % 1D or 3D maps?
-% end
-% 
-% 
-% %% Run pathway calculation for clustered data rather than full trajectory?
-% % Includes culling of frames
-% 
+
+
+%% Compare dihedral distributions of selected dihedrals to references
+% Ex: compare chi's of conserved rotamers in class A GPCRs
+
+if settings.isGPCR
+    % Choose features
+    resImp = ["3.50","4.46","5.54","5.58","6.44","6.47","6.48","7.45"];
+%     resImp = ["3.32","5.42","5.46","7.43"];
+    dihPairs = [1 2; 2 3;3 4];
+
+    for pair = 1:size(dihPairs,1)
+     [idxCell] = dihedralClusterReferences(database,resImp,'dihij',dihPairs(pair,:));
+     savefig(fullfile(md2pathdir,"dihedralClusters_"+num2str(pair)))
+    end
+    % To do: 
+    % 1D or 3D maps?
+end
+
+
+
+
+%% Run pathway calculation for clustered data rather than full trajectory?
+% Includes culling of frames
+
 % 
 % if settings.isGPCR
 %     if settings.doPCA
@@ -446,93 +412,94 @@ mainSim.computeDihedrals(  ...
 %         clear clusterSims % Clear large variables
 %     end
 % end
-% 
-% %% Run pathway calculation for culled frames without clustering
-% 
-% if settings.isGPCR && settings.cullStates
-%     ndxXY_all = ((ndxXY{1}) & (ndxXY{2})); % Filter using both criteria
-%     
-%     % Make subset
-%     culledSims = mainSim.createSubset(C(ndxXY_all, :), 'DihedralMatIndices', ndxXY_all);
-%     
-%     if isempty(settings.bsResidues) && mainEntry.hasChain(Chains.ligand)
-%         % Contact map
-%         [contactsPerRunCulled, ligandAtomIndicesCulled] = culledSims.computeContacts(mainChain, ligandChain,'RCut1', rcut1, 'RCut2', rcut2);
-%         
-%         % Plot contact map
-%         receptorLigandResIdsCulled = plot_save_contact_map(contactsPerRunCulled, mainChain, ligandChain, ligandAtomIndicesCulled, ...
-%             'ImportantCutoff', 0.55, 'RCut', rcut2, ...
-%             'SaveDir', md2pathdir, ...
-%             'SaveName', ("%s_culled" ), ...
-%             'SaveXlsName', "%s", ...
-%             'SaveXlsSheet', "Culled data");
-%     elseif ~isempty(settings.bsResidues)
-%      receptorLigandResIdsCulled = settings.bsResidues;
-%     end
-%     % Calculate MI
-%     miPath = fullfile(md2pathdir, "MI_culled.mat");
-%     culledSims.computeMI('Path', miPath);
-%     
-%     % MI convergence
-%     assessEntropyConvergence(culledSims, ...
-%         'Name', mainEntry.name + ", culled data", ...
-%         'SavePath', fullfile(md2pathdir, "Convergence_culled"));
-% 
-%     % Path calculation
-%     pathCalcdir = prepareAlloPathCalc( ...
-%         culledSims, ...
-%         mainChain, ...
-%         settings, ...
-%         'Dir', md2pathdir, ...
-%         'Name', ("%s_Culled_data"), ...
-%         'LogPath', md2pathdir, ...
-%         'ReceptorLigandResIds', receptorLigandResIdsCulled, ...
-%         'ReceptorGpResIds', receptorGpResIds, ...
-%         'ReceptorResIds', receptorResIds ...
-%         );
-% 
-%     load(fullfile(pathCalcdir,"workspace.mat"))
-% 
-%     prepMI;
-%     MIStatsResLevel;
-%     graphanalysis;
-%     ClusterMIpathways;
-% 
-%     save(fullfile(pathCalcdir,"workspace.mat"),'Gmatmajor','G','pathoverlap','-append');
-% 
-%     analyzeClusters;
-%     writeChannels;
-%     analyzePathDomains;
-%     MIanalysisBS2Effector;
-%     pathwayBiasAnalysis;
-%     
-%     [pHere] = visualizeClsGraph(PDB,pathstruc,Gmatmajor,1,'MIFractionCutoff',MIFractionCutoff);
-%     clear culledSims; % Clear large variables
-% end
+
+%% Run pathway calculation for culled frames without clustering
+
+if settings.isGPCR && settings.cullStates
+    ndxXY_all = ((ndxXY{1}) & (ndxXY{2})); % Filter using both criteria
+    % Make subset
+    culledSims = mainSim.createSubset(C(ndxXY_all, :), 'DihedralMatIndices', ndxXY_all);
+
+    if isempty(settings.bsResidues) && mainEntry.hasChain(Chains.ligand)
+        % Contact map
+        [contactsPerRunCulled, ligandAtomIndicesCulled] = culledSims.computeContacts(mainChain, ligandChain,'RCut1', rcut1, 'RCut2', rcut2);
+        disp(mainChain)
+        disp(ligandChain)
+        disp(rcut1)
+        disp(rcut2)
+        %disp(ligandAtomIndicesCulled)
+        disp(contactsPerRunCulled)
+        % Plot contact map
+        receptorLigandResIdsCulled = plot_save_contact_map(contactsPerRunCulled, mainChain, ligandChain, ligandAtomIndicesCulled, ...
+            'ImportantCutoff', 0.55, 'RCut', rcut2, ...
+            'SaveDir', md2pathdir, ...
+            'SaveName', ("%s_culled" ), ...
+            'SaveXlsName', "%s", ...
+            'SaveXlsSheet', "Culled data");
+    elseif ~isempty(settings.bsResidues)
+     receptorLigandResIdsCulled = settings.bsResidues;
+    end
+    % Calculate MI
+    miPath = fullfile(md2pathdir, "MI_culled.mat");
+    culledSims.computeMI('Path', miPath);
+    
+    % MI convergence
+    assessEntropyConvergence(culledSims, ...
+        'Name', mainEntry.name + ", culled data", ...
+        'SavePath', fullfile(md2pathdir, "Convergence_culled"));
+
+    % Path calculation
+pathCalcdir = prepareAlloPathCalc( ...
+        culledSims, ...
+    mainChain, ...
+    settings, ...
+    'Dir', md2pathdir, ...
+        'Name', ("%s_Culled_data"), ...
+    'LogPath', md2pathdir, ...
+        'ReceptorLigandResIds', receptorLigandResIdsCulled, ...
+    'ReceptorGpResIds', receptorGpResIds, ...
+    'ReceptorResIds', receptorResIds ...
+);
+
+load(fullfile(pathCalcdir,"workspace.mat"))
+
+prepMI;
+MIStatsResLevel;
+graphanalysis;
+ClusterMIpathways;
+analyzeClusters;
+writeChannels;
+analyzePathDomains;
+MIanalysisBS2Effector;
+    pathwayBiasAnalysis;
+
+[pHere] = visualizeClsGraph(PDB,pathstruc,Gmatmajor,1,'MIFractionCutoff',MIFractionCutoff);
+    clear culledSims; % Clear large variables
+end
 
 %% Calculate MI! (Including ALL frames)
 
 mainSim.computeMI('Path', fullfile(md2pathdir, "MI.mat"));
 
 
-% Assess convergence of entropies (Including ALL frames)
+%% Assess convergence of entropies (Including ALL frames)
 
 assessEntropyConvergence(mainSim, 'SavePath', fullfile(md2pathdir, "convergence"));
 add2log(md2pathdir, "S2 convergence calculated and plotted");
 
 
 %% Prepare input files for path calculation! (Including ALL frames)
-
-pathCalcdir = prepareAlloPathCalc( ...
-    mainSim, ...
-    mainChain, ...
-    settings, ...
-    'Dir', md2pathdir, ...
-    'LogPath', md2pathdir, ...
-    'ReceptorLigandResIds', receptorLigandResIds, ...
-    'ReceptorGpResIds', receptorGpResIds, ...
-    'ReceptorResIds', receptorResIds ...
-);
+% 
+% pathCalcdir = prepareAlloPathCalc( ...
+%     mainSim, ...
+%     mainChain, ...
+%     settings, ...
+%     'Dir', md2pathdir, ...
+%     'LogPath', md2pathdir, ...
+%     'ReceptorLigandResIds', receptorLigandResIds, ...
+%     'ReceptorGpResIds', receptorGpResIds, ...
+%     'ReceptorResIds', receptorResIds ...
+% );
 
 
 %% Finally run path calculation!!
@@ -547,28 +514,27 @@ pathCalcdir = prepareAlloPathCalc( ...
 % overlapcutoff = 0.75;
 
 % Reinitialize some needed variables for alloPathCalc
-if ~exist("md2pathdir",'var')
-    md2pathdir = fullfile(settings.mydir, "md2pathdev");
-end
-if ~exist("pathCalcdir",'var')
-    pathCalcdir = fullfile(md2pathdir, sprintf("%s", 'alloPathCalc'));
-end
-
-load(fullfile(pathCalcdir,"workspace.mat"))
-
-prepMI;
-MIStatsResLevel;
-graphanalysis;
-ClusterMIpathways;
-analyzeClusters;
-analyzePathDomains;
-MIanalysisBS2Effector;
-if settings.isGPCR
-    pathwayBiasAnalysis;
-end
-save(fullfile(pathCalcdir,"workspace.mat"),'CAcoord','PDB','channelstruc','Nres','-append');
-
-[pHere] = visualizeClsGraph(PDB,pathstruc,Gmatmajor,1,'MIFractionCutoff',MIFractionCutoff);
+% if ~exist("md2pathdir",'var')
+%     md2pathdir = fullfile(settings.mydir, "md2pathdev");
+% end
+% if ~exist("pathCalcdir",'var')
+%     pathCalcdir = fullfile(md2pathdir, sprintf("%s", 'alloPathCalc'));
+% end
+% 
+% load(fullfile(pathCalcdir,"workspace.mat"))
+% 
+% prepMI;
+% MIStatsResLevel;
+% graphanalysis;
+% ClusterMIpathways;
+% analyzeClusters;
+% writeChannels;
+% analyzePathDomains;
+% MIanalysisBS2Effector;
+% if settings.isGPCR
+%     pathwayBiasAnalysis;
+% end
+% [pHere] = visualizeClsGraph(PDB,pathstruc,Gmatmajor,1,'MIFractionCutoff',MIFractionCutoff);
 % If protein is inversed along z, use this command to make it upright again
 % set(gca,'zdir','reverse')
 

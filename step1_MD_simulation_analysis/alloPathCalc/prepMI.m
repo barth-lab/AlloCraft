@@ -26,9 +26,8 @@ MIraw = MI; % Save unfiltered MI for comparison with filtered
 %% Filter MI according to a statistical significance criterion:
 
 load(dihedralsPath);
-% load(fullfile(pathCalcdir,'dihedrals.mat'));
 MI = filterCorrectMI(dihedralsMat, MIraw, 'SaveDir', pathCalcdir,'SignificanceThreshold',0.05);
-% [MI, binMiArray, iiArray, significanceArray]= filterCorrectMI(dihedralsMat, MIraw, 'SaveDir', pathCalcdir,'SignificanceThreshold',0.05);
+
 %% Calculate MI stats, distribution vs distance and vs dihedral type
 
 MIAnalysisDihLevel;
@@ -68,12 +67,11 @@ for k=1:3
     end
     xlabel('Residue')
     title(MINames{k})
-    hcb = colorbar;
-    hcb.Title.String = "KT";
-    set(gca,'FontSize',16)
+    colorbar
+
     if isGPCR % Add more general secondary structure?
-        drawTMhelices(1:Nres,helices,1:Nres)
-        drawTMhelices(1:Nres,helices,1:Nres,'Y')
+        drawTMhelices(1:Nres,settings.helices,1:Nres)
+        drawTMhelices(1:Nres,settings.helices,1:Nres,'Y')
     end
 
 end
