@@ -41,7 +41,7 @@ function [params, ndxXY, clusterNdx_filtered] = calcPlotOrderParametersClusters(
 
   ndxXY = cell(2,1); % Index for state culling
 %   clusterNdx_filtered= cell(2,1); % Cluster index for state culling
-  for currentPlotIndex = 1:size(plots)
+  for currentPlotIndex = 1:length(plots)
     currentPlot = plots{currentPlotIndex};
 
     tempX = cell(size(currentPlot.x.data{1},1),1);

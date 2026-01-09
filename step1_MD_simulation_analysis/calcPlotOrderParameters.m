@@ -56,7 +56,7 @@ function [params, ndxXY] = calcPlotOrderParameters(database, refEntry, options)
   plots{2}.name = "param_tm36_tm37";
 
   ndxXY = cell(2,1); % Index for state culling
-  for currentPlotIndex = 1:size(plots)
+  for currentPlotIndex = 1:length(plots)
     currentPlot = plots{currentPlotIndex};
 
     tempX = cell(size(currentPlot.x.data{1},1),1);

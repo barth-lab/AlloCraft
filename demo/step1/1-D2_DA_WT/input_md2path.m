@@ -6,14 +6,14 @@
 %% Main input variables:
 
 % Main data directory
-settings.mydir = '/path/to/AlloCraft/MD_simulation_analysis/demo/1-D2_DA_WT';
+settings.mydir = '/data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT';
 
 % Path for the database used by md2path
-settings.databasePath = '/path/to/AlloCraft/MD_simulation_analysis/demo/database';
+settings.databasePath = '/data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/database';
 settings.systemName = 'DD2R'; % Points to the residue table in the database
 
 % Name of the trajectory file in each run
-settings.xtcName = 'step7_noPBC_prot.xtc';
+settings.xtcName = 'traj.dcd';
 
 % Number of frames to remove at the start of the simulation
 settings.frames2skip = 0;
@@ -46,7 +46,7 @@ settings.isGPCR = true;
 % calculation
 % WARNING: requires user input during run at the "Calculate GPCR order
 % parameters" section
-settings.cullStates = true;
+settings.cullStates = false;
 
 % Residues to be ignored in the allosteric pathway calculation, usually you want to
 % ignore floppy termini or long loops that introduce noise into the system.

@@ -16,6 +16,7 @@ end
 % calculate MI between BI and GPI
 count = 1;
 count1 = 1;
+BS_GPI = [];
 for i=1:length(alloMI)
     if( (ismember(alloMI(i,1),BSres) && ismember(alloMI(i,2),GPIres)) ||...
             (ismember(alloMI(i,2),BSres) && ismember(alloMI(i,1),GPIres)) )
@@ -150,4 +151,6 @@ for i=1:length(BS_GPI)
     end
     count = count+1;
 end
-writepathwayClusters(PDB,pathstruc1,1:length(pathstruc1),length(pathstruc1),fullfile(char(pathCalcdir),'BS_GPI'))
+if pathstruc1
+    writepathwayClusters(PDB,pathstruc1,1:length(pathstruc1),length(pathstruc1),fullfile(char(pathCalcdir),'BS_GPI'))
+end

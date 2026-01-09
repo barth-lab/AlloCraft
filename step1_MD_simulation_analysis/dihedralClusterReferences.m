@@ -23,9 +23,6 @@ function [idxCell] = dihedralClusterReferences(database,resImp,options)
 % backbone dihedrals and [3:7] being side chain dihedrals. Defaults to 
 % [1 2]
 % 
-% For other options, check the code, don't be lazy
-
-
 arguments
     database
     resImp
@@ -35,26 +32,21 @@ arguments
     options.epsilon = 0.25; % For DBscan calculation
     options.minpts = 50; % For DBscan
 end
-
 % define simulation, chain, and reference states
 mainSim = database.entries{options.mainEntryNdx}.simulation;
 mainChain = database.entries{options.mainEntryNdx}.chains{options.receptorChain};
-
 actRefNdx = find(database.entryState==1);
 actRefNdx = actRefNdx(1); % Does not support mutliple active/inactive states
 inactRefNdx = find(database.entryState==2);
 inactRefNdx = inactRefNdx(1);
-
 % Get features from list of important residues and dihedral list
 feature = zeros(length(database.entries),length(resImp));
 for i=1:length(resImp)
     featureHere = database.findResidue(resImp(i));
     feature(:,i) = featureHere;
 end
-
 dihedralsDatabase = database.calcDihedral(feature, options.receptorChain);
 dihLabels = ["\phi","\psi","\chi_1","\chi_2","\chi_3","\chi_4","\chi_5"];
-
 assert(~isempty(mainSim.dihedralsMat),'Simulation does not contain dihedrals! Calculate dihedrals first!!!')
 temp = mainSim.dihedrals(feature(1,:));
 resFormatted = mainChain.formatResidues(feature(1,:));
@@ -62,13 +54,11 @@ idxCell = cell(length(resImp),1);
 % Pick dihedrals to plot:
 dihi = options.dihij(1);
 dihj = options.dihij(2);
-
 % Plot desired dihedrals with their time series
 figure
 tiledlayout('flow')
 for resNdx = 1:length(resImp)
     nexttile
-
     if size(temp{resNdx},2) < max(dihi,dihj) % skip if dihedral does not exist
         continue
     end
@@ -76,13 +66,19 @@ for resNdx = 1:length(resImp)
     Ydat = temp{resNdx}(:,dihj);
     
     if actRefNdx && inactRefNdx % Add active and inactive references to time series
-        Xdat = [ Xdat; dihedralsDatabase{actRefNdx,resNdx}(dihi) ;dihedralsDatabase{inactRefNdx,resNdx}(dihi)];
-        Ydat = [ Ydat; dihedralsDatabase{actRefNdx,resNdx}(dihj) ;dihedralsDatabase{inactRefNdx,resNdx}(dihj)];
+        % FIXED BLOCK START: Check existence before access
+        actVals = dihedralsDatabase{actRefNdx,resNdx};
+        inactVals = dihedralsDatabase{inactRefNdx,resNdx};
+        
+        if length(actVals) >= max(dihi,dihj) && length(inactVals) >= max(dihi,dihj)
+            Xdat = [ Xdat; actVals(dihi); inactVals(dihi)];
+            Ydat = [ Ydat; actVals(dihj); inactVals(dihj)];
+        end
+        % FIXED BLOCK END
     end
     % Get distance matrix between dihedrals with periodic boundary
     % conditions
     [distMat] = calcDistMatPBC2D(Xdat,Ydat,2*pi,2*pi);
-
     % Cluster elements
     [idx,~]= dbscan(distMat,options.epsilon,options.minpts,'Distance','precomputed');
     idxCell{resNdx} = idx;
@@ -99,7 +95,6 @@ for resNdx = 1:length(resImp)
         stateLabel = "";
         warning("Could not find active and inactive reference states in database!!!")
     end
-
     gscatter(Xdat,Ydat,idx)
     hold on;
     xlabel(dihLabels(dihi))
@@ -127,7 +122,6 @@ for resNdx = 1:length(resImp)
         h = scatter(nan,nan, ...
               100,mrkr,'MarkerFaceAlpha',0.75 , 'DisplayName', dispName);
     end
-
           set(h, 'MarkerFaceColor', get(h, 'MarkerEdgeColor'));
           set(h, 'MarkerEdgeColor', 'w');
         
@@ -142,6 +136,4 @@ for resNdx = 1:length(resImp)
 end
 sgtitle([database.entries{options.mainEntryNdx}.name ', \epsilon = ' ...
     num2str(options.epsilon) ', minpts = ' num2str(options.minpts)])
-
-
 end

@@ -1,0 +1,226 @@
+09-Jan-2026 16:36:01: Creating md2path directory in /data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT
+09-Jan-2026 16:41:28: RMSD plotted and saved successfully
+09-Jan-2026 16:41:29: Receptor RMSF plotted and saved successfully
+09-Jan-2026 16:41:30: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 16:41:31: Effector RMSF plotted and saved successfully
+09-Jan-2026 16:41:31: Calculating contact map of receptor with ligand
+09-Jan-2026 16:41:36: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 16:41:45: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 16:41:45: PCA analysis commenced
+09-Jan-2026 16:41:45: Creating pca directory in /data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT/md2pathdev
+09-Jan-2026 16:41:49: PCA clustering of ligand pose performed!
+09-Jan-2026 16:41:58: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 16:42:04: PCA clustering of receptor performed!
+09-Jan-2026 16:42:23: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 16:53:15: RMSD plotted and saved successfully
+09-Jan-2026 16:53:16: Receptor RMSF plotted and saved successfully
+09-Jan-2026 16:53:17: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 16:53:18: Effector RMSF plotted and saved successfully
+09-Jan-2026 16:53:18: Calculating contact map of receptor with ligand
+09-Jan-2026 16:53:22: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 16:53:34: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 16:53:34: PCA analysis commenced
+09-Jan-2026 16:53:36: PCA clustering of ligand pose performed!
+09-Jan-2026 16:53:44: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 16:53:49: PCA clustering of receptor performed!
+09-Jan-2026 16:54:09: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 16:57:33: RMSD plotted and saved successfully
+09-Jan-2026 16:57:34: Receptor RMSF plotted and saved successfully
+09-Jan-2026 16:57:34: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 16:57:35: Effector RMSF plotted and saved successfully
+09-Jan-2026 16:57:35: Calculating contact map of receptor with ligand
+09-Jan-2026 16:57:40: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 16:57:49: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 16:57:49: PCA analysis commenced
+09-Jan-2026 16:57:50: PCA clustering of ligand pose performed!
+09-Jan-2026 16:57:58: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 16:58:02: PCA clustering of receptor performed!
+09-Jan-2026 16:58:22: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 17:01:42: RMSD plotted and saved successfully
+09-Jan-2026 17:01:43: Receptor RMSF plotted and saved successfully
+09-Jan-2026 17:01:43: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 17:01:44: Effector RMSF plotted and saved successfully
+09-Jan-2026 17:01:44: Calculating contact map of receptor with ligand
+09-Jan-2026 17:01:49: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 17:01:58: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 17:01:58: PCA analysis commenced
+09-Jan-2026 17:01:59: PCA clustering of ligand pose performed!
+09-Jan-2026 17:02:07: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 17:02:11: PCA clustering of receptor performed!
+09-Jan-2026 17:02:30: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 17:07:54: RMSD plotted and saved successfully
+09-Jan-2026 17:07:54: Receptor RMSF plotted and saved successfully
+09-Jan-2026 17:07:55: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 17:07:55: Effector RMSF plotted and saved successfully
+09-Jan-2026 17:07:55: Calculating contact map of receptor with ligand
+09-Jan-2026 17:08:00: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 17:08:10: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 17:08:10: PCA analysis commenced
+09-Jan-2026 17:08:11: PCA clustering of ligand pose performed!
+09-Jan-2026 17:08:19: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 17:08:23: PCA clustering of receptor performed!
+09-Jan-2026 17:08:45: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 17:12:37: RMSD plotted and saved successfully
+09-Jan-2026 17:12:37: Receptor RMSF plotted and saved successfully
+09-Jan-2026 17:12:38: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 17:12:38: Effector RMSF plotted and saved successfully
+09-Jan-2026 17:12:38: Calculating contact map of receptor with ligand
+09-Jan-2026 17:12:43: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 17:12:52: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 17:12:52: PCA analysis commenced
+09-Jan-2026 17:12:53: PCA clustering of ligand pose performed!
+09-Jan-2026 17:13:01: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 17:13:04: PCA clustering of receptor performed!
+09-Jan-2026 17:13:25: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 17:18:26: RMSD plotted and saved successfully
+09-Jan-2026 17:18:27: Receptor RMSF plotted and saved successfully
+09-Jan-2026 17:18:28: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 17:18:28: Effector RMSF plotted and saved successfully
+09-Jan-2026 17:18:28: Calculating contact map of receptor with ligand
+09-Jan-2026 17:25:45: RMSD plotted and saved successfully
+09-Jan-2026 17:25:46: Receptor RMSF plotted and saved successfully
+09-Jan-2026 17:25:46: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 17:25:47: Effector RMSF plotted and saved successfully
+09-Jan-2026 17:25:47: Calculating contact map of receptor with ligand
+09-Jan-2026 17:25:58: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 17:26:07: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 17:26:07: PCA analysis commenced
+09-Jan-2026 17:26:09: PCA clustering of ligand pose performed!
+09-Jan-2026 17:26:17: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 17:26:21: PCA clustering of receptor performed!
+09-Jan-2026 17:26:40: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 18:01:58: RMSD plotted and saved successfully
+09-Jan-2026 18:01:59: Receptor RMSF plotted and saved successfully
+09-Jan-2026 18:02:00: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 18:02:00: Effector RMSF plotted and saved successfully
+09-Jan-2026 18:02:00: Calculating contact map of receptor with ligand
+09-Jan-2026 18:02:05: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 18:02:17: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 18:02:17: PCA analysis commenced
+09-Jan-2026 18:02:18: PCA clustering of ligand pose performed!
+09-Jan-2026 18:02:26: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 18:02:33: PCA clustering of receptor performed!
+09-Jan-2026 18:02:53: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 18:11:44: RMSD plotted and saved successfully
+09-Jan-2026 18:11:45: Receptor RMSF plotted and saved successfully
+09-Jan-2026 18:11:45: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 18:11:46: Effector RMSF plotted and saved successfully
+09-Jan-2026 18:11:46: Calculating contact map of receptor with ligand
+09-Jan-2026 18:11:52: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 18:12:04: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 18:12:04: PCA analysis commenced
+09-Jan-2026 18:12:07: PCA clustering of ligand pose performed!
+09-Jan-2026 18:12:16: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 18:12:19: PCA clustering of receptor performed!
+09-Jan-2026 18:12:39: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 18:13:42: S2 convergence calculated and plotted
+09-Jan-2026 18:13:43: Extracted receptor PDB, chain: A, renumbered from 1, and saved it to protRenum.pdb
+09-Jan-2026 18:13:43: All files after this point will be written to the path calculation directory: /data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT/md2pathdev/alloPathCalc
+09-Jan-2026 18:13:43: Added first and last 4 residues as default excluded residues in the pathway calculation
+09-Jan-2026 18:13:43: Using user defined helices variable that has been written to 
+/data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT/md2pathdev/alloPathCalc: helices.txt
+09-Jan-2026 18:13:43: Beta arrestin calculations are ignored
+09-Jan-2026 18:13:43: Binding site residues renumbered and saved to BS_residues.txt
+09-Jan-2026 18:13:43: G-protein interacting residues renumbered and saved to GPI_residues.txt
+09-Jan-2026 18:13:43: reSort renumbered and saved to reSort.txt
+09-Jan-2026 18:13:43: All input is ready, running allosteric path calculation now with the following options:
+  Distance cutoff for allosteric signal: 10.000000 Ang
+  Near cutoff: 7.500000 Ang
+  Pathway overlap cutoff: 0.750000
+09-Jan-2026 18:28:57: RMSD plotted and saved successfully
+09-Jan-2026 18:28:58: Receptor RMSF plotted and saved successfully
+09-Jan-2026 18:28:58: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 18:28:59: Effector RMSF plotted and saved successfully
+09-Jan-2026 18:28:59: Calculating contact map of receptor with ligand
+09-Jan-2026 18:29:03: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 18:29:13: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 18:29:13: PCA analysis commenced
+09-Jan-2026 18:29:14: PCA clustering of ligand pose performed!
+09-Jan-2026 18:29:23: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 18:29:26: PCA clustering of receptor performed!
+09-Jan-2026 18:29:48: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 18:30:21: S2 convergence calculated and plotted
+09-Jan-2026 18:30:22: Extracted receptor PDB, chain: A, renumbered from 1, and saved it to protRenum.pdb
+09-Jan-2026 18:30:22: All files after this point will be written to the path calculation directory: /data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT/md2pathdev/alloPathCalc
+09-Jan-2026 18:30:22: Added first and last 4 residues as default excluded residues in the pathway calculation
+09-Jan-2026 18:30:22: Using user defined helices variable that has been written to 
+/data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT/md2pathdev/alloPathCalc: helices.txt
+09-Jan-2026 18:30:22: Beta arrestin calculations are ignored
+09-Jan-2026 18:30:22: Binding site residues renumbered and saved to BS_residues.txt
+09-Jan-2026 18:30:22: G-protein interacting residues renumbered and saved to GPI_residues.txt
+09-Jan-2026 18:30:22: reSort renumbered and saved to reSort.txt
+09-Jan-2026 18:30:22: All input is ready, running allosteric path calculation now with the following options:
+  Distance cutoff for allosteric signal: 10.000000 Ang
+  Near cutoff: 7.500000 Ang
+  Pathway overlap cutoff: 0.750000
+09-Jan-2026 18:37:34: RMSD plotted and saved successfully
+09-Jan-2026 18:37:35: Receptor RMSF plotted and saved successfully
+09-Jan-2026 18:37:37: Do not forget ligand RMSF! It has also been plotted and saved
+
+09-Jan-2026 18:37:38: Effector RMSF plotted and saved successfully
+09-Jan-2026 18:37:38: Calculating contact map of receptor with ligand
+09-Jan-2026 18:37:45: Calculating Gp interacting residues from downloaded PDB: 6VMS
+09-Jan-2026 18:37:55: G-protein contacting residues written to GPI_residues.txt
+Contact maps saved to pdf and fig: 
+09-Jan-2026 18:37:55: PCA analysis commenced
+09-Jan-2026 18:37:56: PCA clustering of ligand pose performed!
+09-Jan-2026 18:38:05: frame_centers saved to pcaCenterFrame_runxt
+pdbs saved to ligandpca.pdb and ligandReceptorpca.pdb
+09-Jan-2026 18:38:09: PCA clustering of receptor performed!
+09-Jan-2026 18:38:29: frame_centers saved to prot_pcaCenterFrame_run.txt
+pdbs saved to prot_pcaLigandReceptor.pdb
+09-Jan-2026 18:38:59: S2 convergence calculated and plotted
+09-Jan-2026 18:39:00: Extracted receptor PDB, chain: A, renumbered from 1, and saved it to protRenum.pdb
+09-Jan-2026 18:39:00: All files after this point will be written to the path calculation directory: /data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT/md2pathdev/alloPathCalc
+09-Jan-2026 18:39:00: Added first and last 4 residues as default excluded residues in the pathway calculation
+09-Jan-2026 18:39:00: Using user defined helices variable that has been written to 
+/data/winnicki/code/TEST_ALLOCRAFT_PAPER/AlloCraft/demo/step1/1-D2_DA_WT/md2pathdev/alloPathCalc: helices.txt
+09-Jan-2026 18:39:00: Beta arrestin calculations are ignored
+09-Jan-2026 18:39:00: Binding site residues renumbered and saved to BS_residues.txt
+09-Jan-2026 18:39:00: G-protein interacting residues renumbered and saved to GPI_residues.txt
+09-Jan-2026 18:39:00: reSort renumbered and saved to reSort.txt
+09-Jan-2026 18:39:00: All input is ready, running allosteric path calculation now with the following options:
+  Distance cutoff for allosteric signal: 10.000000 Ang
+  Near cutoff: 7.500000 Ang
+  Pathway overlap cutoff: 0.750000

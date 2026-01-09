@@ -31,7 +31,7 @@
 % 10- Prep input for pathway calculation
 % 11- Run pathway calculation
 
-
+global settings
 %% Check that the data directory exists
 
 assert(logical(exist(settings.mydir, 'dir')), "Directory does not exist!!! Please point to an existing directory!");
@@ -72,7 +72,8 @@ end
 database = Database(settings.databasePath);
 
 % Chains: [receptor, G protein, ligand]
-database.read(fullfile(settings.mydir, "prot_pymol.pdb"), settings.chains, "Protein");
+disp(settings.mydir)
+database.read(fullfile(settings.mydir, "prot.pdb"), settings.chains, "Protein");
 
 if ~isempty(settings.pdbCode)
     database.fetch(settings.pdbCode, settings.pdbChains, 1);
@@ -364,22 +365,22 @@ mainSim.computeDihedrals(  ...
 );
 
 
-%% Compare dihedral distributions of selected dihedrals to references
-% Ex: compare chi's of conserved rotamers in class A GPCRs
-
-if settings.isGPCR
-    % Choose features
-    resImp = ["3.50","4.46","5.54","5.58","6.44","6.47","6.48","7.45"];
-%     resImp = ["3.32","5.42","5.46","7.43"];
-    dihPairs = [1 2; 2 3;3 4];
-
-    for pair = 1:size(dihPairs,1)
-     [idxCell] = dihedralClusterReferences(database,resImp,'dihij',dihPairs(pair,:));
-     savefig(fullfile(md2pathdir,"dihedralClusters_"+num2str(pair)))
-    end
-    % To do: 
-    % 1D or 3D maps?
-end
+% %% Compare dihedral distributions of selected dihedrals to references
+% % Ex: compare chi's of conserved rotamers in class A GPCRs
+% 
+% if settings.isGPCR
+%     % Choose features
+%     resImp = ["3.50","4.46","5.54","5.58","6.44","6.47","6.48","7.45"];
+% %     resImp = ["3.32","5.42","5.46","7.43"];
+%     dihPairs = [1 2; 2 3;3 4];
+% 
+%     for pair = 1:size(dihPairs,1)
+%      [idxCell] = dihedralClusterReferences(database,resImp,'dihij',dihPairs(pair,:));
+%      savefig(fullfile(md2pathdir,"dihedralClusters_"+num2str(pair)))
+%     end
+%     % To do: 
+%     % 1D or 3D maps?
+% end
 
 
 
@@ -489,54 +490,54 @@ add2log(md2pathdir, "S2 convergence calculated and plotted");
 
 
 %% Prepare input files for path calculation! (Including ALL frames)
-% 
-% pathCalcdir = prepareAlloPathCalc( ...
-%     mainSim, ...
-%     mainChain, ...
-%     settings, ...
-%     'Dir', md2pathdir, ...
-%     'LogPath', md2pathdir, ...
-%     'ReceptorLigandResIds', receptorLigandResIds, ...
-%     'ReceptorGpResIds', receptorGpResIds, ...
-%     'ReceptorResIds', receptorResIds ...
-% );
+
+pathCalcdir = prepareAlloPathCalc( ...
+    mainSim, ...
+    mainChain, ...
+    settings, ...
+    'Dir', md2pathdir, ...
+    'LogPath', md2pathdir, ...
+    'ReceptorLigandResIds', receptorLigandResIds, ...
+    'ReceptorGpResIds', receptorGpResIds, ...
+    'ReceptorResIds', receptorResIds ...
+);
 
 
 %% Finally run path calculation!!
 
-% These options are now specified in the input script
-% % Distance cutoff for considering "allosteric" signal, default is 10 A
-% disCutOff = 10;
-%
-% % cutoff for pathways to be considered near, and amount of overlap required
-% % to cluster them into one pipeline, default to 7.5 and 0.75
-% nearcutoff = 7.5;
-% overlapcutoff = 0.75;
+%These options are now specified in the input script
+% Distance cutoff for considering "allosteric" signal, default is 10 A
+disCutOff = 10;
 
-% Reinitialize some needed variables for alloPathCalc
-% if ~exist("md2pathdir",'var')
-%     md2pathdir = fullfile(settings.mydir, "md2pathdev");
-% end
-% if ~exist("pathCalcdir",'var')
-%     pathCalcdir = fullfile(md2pathdir, sprintf("%s", 'alloPathCalc'));
-% end
-% 
-% load(fullfile(pathCalcdir,"workspace.mat"))
-% 
-% prepMI;
-% MIStatsResLevel;
-% graphanalysis;
-% ClusterMIpathways;
-% analyzeClusters;
-% writeChannels;
-% analyzePathDomains;
-% MIanalysisBS2Effector;
-% if settings.isGPCR
-%     pathwayBiasAnalysis;
-% end
-% [pHere] = visualizeClsGraph(PDB,pathstruc,Gmatmajor,1,'MIFractionCutoff',MIFractionCutoff);
+% cutoff for pathways to be considered near, and amount of overlap required
+% to cluster them into one pipeline, default to 7.5 and 0.75
+nearcutoff = 7.5;
+overlapcutoff = 0.75;
+
+%Reinitialize some needed variables for alloPathCalc
+if ~exist("md2pathdir",'var')
+    md2pathdir = fullfile(settings.mydir, "md2pathdev");
+end
+if ~exist("pathCalcdir",'var')
+    pathCalcdir = fullfile(md2pathdir, sprintf("%s", 'alloPathCalc'));
+end
+
+load(fullfile(pathCalcdir,"workspace.mat"))
+
+prepMI;
+MIStatsResLevel;
+graphanalysis;
+ClusterMIpathways;
+analyzeClusters;
+writeChannels;
+analyzePathDomains;
+MIanalysisBS2Effector;
+if settings.isGPCR
+    pathwayBiasAnalysis;
+end
+[pHere] = visualizeClsGraph(PDB,pathstruc,Gmatmajor,1,'MIFractionCutoff',MIFractionCutoff);
 % If protein is inversed along z, use this command to make it upright again
 % set(gca,'zdir','reverse')
-
+% 
 % If the "chirality" is off, you can use this:
 % set(gca,'ydir','reverse')
