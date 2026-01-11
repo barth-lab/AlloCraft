@@ -35,36 +35,36 @@ This step offers 3 functionalities: **md2path**, **kldiv**, and **meta** analyse
 
 - **meta** functions analyze the output of **md2path** or **kldiv** for a set of systems/proteins. Refer to individual scripts for more details
 
+### Generated Data
+The analysis pipeline generates a variety of data, which is typically saved in a md2pathdev subdirectory within your specific data folder (e.g., data/YOUR_SIMULATION_FOLDER/md2pathdev/). Key outputs include:
+
+Plots and Figures (.fig, .pdf): Visualizations of RMSD, RMSF, contact maps, PCA results, and KL divergence.
+PDB Files (.pdb): Structures with RMSF or KL divergence values saved in the B-factor column for easy visualization.
+MAT-files (.mat): Contain processed data such as dihedral time series, MI matrices, and PCA results.
+Text and Excel Files (.txt, .xlsx): Lists of interacting residues and other tabular data.
+
 ### Installation:
 
 Requirements:
-- [Matlab](https://www.mathworks.com/products/matlab.html) 2021b or newer
-- [Matlab Bioinformatics toolbox](https://www.mathworks.com/products/bioinfo.html)
-- [MDprot](https://github.com/mahdiofhijaz/MDprot) package
-- [VMD](https://www.ks.uiuc.edu/Research/vmd/)
+- [Matlab](https://www.mathworks.com/products/matlab.html) R2024a or newer
+- [VMD](https://www.ks.uiuc.edu/Research/vmd/) [OPTIONAL]
+
+Installation time: ~15 min (including the matlab installation)
 
 The software has been tested with:
 - Windows 11 version 21H2
 - Ubuntu 18.04
-- Matlab R2021b
+- Matlab R2024a, R2024b, and R2025b [with a one-line fix]
 - VMD 1.9.3
 
-Download MDprot and add it to your Matlab path.
-Downloading can be done manually from the aforementioned link or in the command line via:
+Download `step1_MD_simulation_analysis/`  folder either manually from this repo or by cloning it
 
-```
-git clone https://github.com/mahdiofhijaz/MDprot.git
-```
+Add the downloaded scripts and folders to the Matlab path
 Adding to path in Matlab can be done in more than one way: 
 - Per session:
 https://ch.mathworks.com/help/matlab/ref/addpath.html
 - Permanently at startup:
 https://ch.mathworks.com/help/matlab/matlab_env/add-folders-to-matlab-search-path-at-startup.html
-
-Next, get the Bioinformatics Toolbox for Matlab, more details regarding add-on management can be found here:
-https://ch.mathworks.com/help/matlab/matlab_env/get-add-ons.html
-
-Finally download MD_simulation_analysis folder either manually from this repo or by cloning it
 
 For the smoothest experience, AlloCraft also uses visual molecular dynamics (VMD) to transform .xtc files to .dcd and to predict secondary structure of a protein. You can download it for free from here: https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD 
 
@@ -74,15 +74,44 @@ You can run the main scripts without having VMD installed if you provide .dcd tr
 
 ### Instructions:
 
-All the input parameters needed for the analysis are provided in *input_md2path.m* for **md2path** and *input_kldiv.m* for **kldiv**.
-Copy the corresponding input script to your local directory and set up the input parameters. All parameters are explained in the input scripts.
+Before running, you must configure two key files in the `step1_MD_simulation_analysis/` directory: `input_md2path.m` and `input_kldiv.m`. These scripts use a `global settings` variable to manage all parameters.
+
+#### Important Parameters to Modify
+
+##### 1. `input_md2path.m` (Main Analysis)
+
+*   `settings.mydir`: **Crucial.** Set this to the directory containing your simulation data. The script expects this directory to contain subfolders like `run1`, `run2`, etc.
+*   `settings.xtcName`: The name of your trajectory file within each `run*` folder. The default is `'traj.dcd'`. **Note:** The scripts are optimized for `.dcd` files. If you use `.xtc` files, a conversion will be attempted using a VMD Tcl script (`load_save.tcl`), but direct `.dcd` usage is recommended.
+*   `settings.chains`: Defines the chain identifiers for the `[receptor, G protein, ligand]`. Use a hyphen `-` for any missing chains (e.g., `'A-B'` for a receptor and ligand). The default is `'ACB'`.
+*   `settings.numRuns`: The total number of simulation runs (e.g., `run1`, `run2`, ...) to analyze from your data directory.
+*   `settings.stride`: The step size for reading trajectory frames. A value of `1` reads every frame, while a value of `10` would read every 10th frame. This is useful for reducing computational load on very large trajectories.
+
+##### 2. `input_kldiv.m` (Comparative Analysis)
+
+*   `settings.mydir`: The data directory for your primary or "perturbed" system.
+*   `settings.refdir`: **Reference System.** The data directory for the second simulation that you want to compare against the primary one. KL divergence measures the difference between the dihedral distributions of the `mydir` and `refdir` systems (e.g., comparing a mutant against a wild-type).
+*   `settings.mainName` & `settings.refName`: Short, descriptive names for your main and reference systems used for labeling outputs.
+
+##### 3. PDB Filenames
+
+The scripts expect specific PDB filenames within the main analysis functions. If your files are named differently, you **must** update them.
+
+*   In `md2pathMain.m`:
+    ```matlab
+    % Look for this line and change "prot.pdb" if needed
+    database.read(fullfile(settings.mydir, "prot.pdb"), settings.chains, "Protein");
+    ```
+*   In `kldivMain.m`:
+    ```matlab
+    % Change "prot.pdb" in the reference or target directories if your files are named differently
+    database.read(fullfile(settings.mydir, "prot.pdb"), settings.chains, settings.mainName);
+    database.read(fullfile(settings.refdir, "prot.pdb"), settings.chains, settings.refName );
+    ```
 
 Create a PDB file with separate chains for receptor, ligand, and G-protein/effector site, and define the chains in the input script.
 
-NOTE: all input residues should be in the same pdb numbering as the input PDB
-
-The script takes in either .xtc or .dcd trajectory files, and every trajectory file needs to be in its own directory (runN, where N is the number of the run). Prepare your directory in the following manner:
-
+> **Note:** all input residues should be in the same pdb numbering as the input PDB.
+#### Directory Structure:
 Main directory:
 prot.pdb (your pdb file)
 - run1/ -> traj.dcd OR traj.xtc (your trajectory files)
@@ -97,17 +126,87 @@ Where run1->N are directories that contain your trajectories
 Run *input_md2path.m* or *input_kldiv.m*
 
 Run *md2pathMain.m* or *kldivMain.m*. All the output can be found in a folder called **md2pathdev** created in your defined directory in your input script.
-To run pathway calculation for individual trajectory clusters, setup and run *pca_1b_ligandPathCalcClusters.m* after the PCA and dihedrals sections in *md2pathmain.m*
 
-Typical runtime for calculations: 
+#### Typical runtime for calculations: 
 - md2path: ~ 1 hour from start to finish on a typical PC and for around 15000-20000 frames of trajectory of a 300-400 residue GPCR
 - kldiv: a few minutes assuming you only calculate 1st order KL divergences
 
+### Running the Analysis
+
+The analysis can be executed from the interactive MATLAB GUI.
+
+1.  **Open MATLAB.**
+2.  **Navigate to the scripts directory.** In the "Current Folder" toolbar, paste the absolute path to the `scripts2` directory and press Enter.
+    ```matlab
+    /path/to/AlloDy_Analysis_Repo/scripts2
+    ```
+3.  **Run the scripts.** In the "Command Window" (at the `>>` prompt), type the following commands. The semicolon at the end of each command suppresses verbose output and allows them to run sequentially.
+    ```matlab
+    input_md2path;
+    md2pathMain;
+    ```
+    
+    ```matlab
+    input_kldiv;
+    kldivMain;
+    ```
+    
+    
 ### Acknowledgements:
 - Mutual information statistical filtering: McClendon et al., J Chem Theory Comput (2009)
 - Using Kullback−Leibler divergences to compare conformational ensembles: McClendon et al., J Chem Theory Comput (2012)
 - Clustering mutual information into allosteric pathways: Bhattacharya and Vaidehi, Biophy J (2014); Nivedha et al., Mol Pharmacol (2018)
 - MDToolbox for Matlab: Matsunaga, and Sugita, J Chem Phys (2018)
+
+### FAQ:
+
+#### 1- Compatibility with Matlab versions
+
+| MATLAB | Status | Notes |
+|--------|--------|-------|
+| R2025b | ✅ OK | Needs 1-line fix (below). |
+| R2024b | ✅ OK | No changes needed in our tests. |
+| R2024a | ✅ OK | No changes needed in our tests. |
+
+
+**Please include your MATLAB version when reporting issues.**
+
+---
+
+#### 2- Quick fix for R2025b
+
+`calcPlotOrderParameters.m` may use `size(plots)` where `length` is safer.
+
+**Path:** `scripts2/src/calcPlotOrderParameters.m`
+
+**Change:**
+
+```matlab
+% Old
+nplots = size(plots);
+
+% New
+nplots = length(plots);
+```
+
+**Then run:**
+
+```matlab
+input_md2path; md2pathMain; input_kldiv; kldivMain;
+```
+
+---
+
+#### 3- R2024a first-run workaround
+
+If `input_md2path.m` errors on the first run, try again.
+
+If it persists:
+
+```matlab
+restoredefaultpath; rehash toolboxcache;
+input_md2path; md2pathMain; input_kldiv; kldivMain;
+```
 
 ## Step 2: Amino acid design to modify allosteric behavior
 This is the second step of the process, where we will do in silico mutagenesis to the hubs that we extracted from step1, followed by coarse grained dynamical coupling calculations.
@@ -136,4 +235,5 @@ More details can be found in the demo.
 
 ## Contact: mahdi.hijazi@epfl.ch (2024)
 ##
+
 
