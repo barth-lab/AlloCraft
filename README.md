@@ -136,9 +136,9 @@ Run *md2pathMain.m* or *kldivMain.m*. All the output can be found in a folder ca
 The analysis can be executed from the interactive MATLAB GUI.
 
 1.  **Open MATLAB.**
-2.  **Navigate to the scripts directory.** In the "Current Folder" toolbar, paste the absolute path to the `scripts2` directory and press Enter.
+2.  **Navigate to the scripts directory.** In the "Current Folder" toolbar, paste the absolute path to the `step1_MD_simulation_analysis` directory and press Enter.
     ```matlab
-    /path/to/AlloDy_Analysis_Repo/scripts2
+    /path/to/AlloDy_Analysis_Repo/step1_MD_simulation_analysis
     ```
 3.  **Run the scripts.** In the "Command Window" (at the `>>` prompt), type the following commands. The semicolon at the end of each command suppresses verbose output and allows them to run sequentially.
     ```matlab
@@ -177,7 +177,7 @@ The analysis can be executed from the interactive MATLAB GUI.
 
 `calcPlotOrderParameters.m` may use `size(plots)` where `length` is safer.
 
-**Path:** `scripts2/src/calcPlotOrderParameters.m`
+**Path:** `step1_MD_simulation_analysis/src/calcPlotOrderParameters.m`
 
 **Change:**
 
@@ -235,5 +235,6 @@ More details can be found in the demo.
 
 ## Contact: mahdi.hijazi@epfl.ch (2024)
 ##
+
 
 
