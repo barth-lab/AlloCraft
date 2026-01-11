@@ -26,7 +26,7 @@ klDivFileName = ['klDiv_' settings.refName  '.mat'];
 database = Database(settings.databasePath);
 
 % Chains: [receptor, G protein, ligand]
-database.read(fullfile(settings.mydir, "prot_pymol.pdb"), settings.chains, settings.mainName);
+database.read(fullfile(settings.mydir, "prot.pdb"), settings.chains, settings.mainName);
 % Load the KLDiv reference structure:
 database.read(fullfile(settings.refdir, "prot.pdb"), settings.chains, settings.refName );
 
